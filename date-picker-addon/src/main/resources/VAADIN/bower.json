@@ -1,0 +1,22 @@
+{
+  "name": "vaadin-date-picker-addon",
+  "authors": [
+    "Artur Signell <artur@vaadin.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "Apache2",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "vaadin-date-picker": "1.2.0-alpha2",
+    "polymer": "1.7.0"
+  }
+}
