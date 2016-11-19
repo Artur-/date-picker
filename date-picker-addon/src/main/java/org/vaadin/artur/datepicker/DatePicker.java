@@ -102,6 +102,11 @@ public class DatePicker extends PopupDateField {
         setAttribute("label", caption);
     }
 
+    @Override
+    public void setInputPrompt(String inputPrompt) {
+        setAttribute("placeholder", inputPrompt);
+    }
+
     private void setAttribute(String attr, Date date) {
         if (date != null) {
             root.setAttribute(attr, dateFormatter.format(date));
