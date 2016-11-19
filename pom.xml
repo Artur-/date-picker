@@ -5,7 +5,7 @@
 	<groupId>org.vaadin.artur</groupId>
 	<artifactId>date-picker-root</artifactId>
 	<packaging>pom</packaging>
-	<version>0.1.0</version>
+	<version>0.2.0</version>
 	<name>DatePicker Add-on Root Project</name>
 
 	<prerequisites>
