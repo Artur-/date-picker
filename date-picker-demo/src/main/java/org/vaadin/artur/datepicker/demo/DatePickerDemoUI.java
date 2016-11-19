@@ -50,7 +50,8 @@ public class DatePickerDemoUI extends UI {
         DatePicker localeDatePicker = new DatePicker();
         localeDatePicker.setWidth("500px");
         localeDatePicker.setInputPrompt(
-                "Date picker using selected locale, input prompt");
+                "Date picker using selected locale, input prompt and week numbers");
+        localeDatePicker.setShowISOWeekNumbers(true);
         localeDatePicker.addValueChangeListener(e -> {
             Notification.show("datePicker value changed to "
                     + e.getProperty().getValue());

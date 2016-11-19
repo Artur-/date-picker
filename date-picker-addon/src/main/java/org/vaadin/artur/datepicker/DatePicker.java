@@ -174,6 +174,11 @@ public class DatePicker extends PopupDateField {
         setAttribute("placeholder", inputPrompt);
     }
 
+    @Override
+    public void setShowISOWeekNumbers(boolean showWeekNumbers) {
+        setAttribute("show-week-numbers", showWeekNumbers);
+    }
+
     private void setAttribute(String attr, Date date) {
         if (date != null) {
             root.setAttribute(attr, dateFormatter.format(date));
