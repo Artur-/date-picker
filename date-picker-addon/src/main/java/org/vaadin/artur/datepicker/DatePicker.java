@@ -29,7 +29,9 @@ public class DatePicker extends PopupDateField {
         root.addEventListener("value-changed", arguments -> {
             try {
                 String v = root.getAttribute("value");
-                if (!"".equals(v)) {
+                if ("".equals(v)) {
+                    setValue(null);
+                } else {
                     setValue(dateFormatter.parse(v));
                 }
             } catch (ParseException e) {
@@ -76,7 +78,11 @@ public class DatePicker extends PopupDateField {
     @Override
     protected void setInternalValue(Date newValue) {
         super.setInternalValue(newValue);
-        root.setAttribute("value", dateFormatter.format(newValue));
+        if (newValue == null) {
+            root.removeAttribute("value");
+        } else {
+            root.setAttribute("value", dateFormatter.format(newValue));
+        }
     }
 
     @Override
