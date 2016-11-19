@@ -1,6 +1,6 @@
 package org.vaadin.artur.datepicker.demo;
 
-import java.util.Date;
+import java.util.Locale;
 
 import javax.servlet.annotation.WebServlet;
 
@@ -11,25 +11,21 @@ import com.vaadin.annotations.Title;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.annotations.Viewport;
 import com.vaadin.data.Property;
-import com.vaadin.data.util.ObjectProperty;
+import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
-import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.GridLayout;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
-import com.vaadin.ui.PopupDateField;
 import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
 
 @Theme("demo")
 @Title("DatePicker Add-on Demo")
 @SuppressWarnings("serial")
 @Viewport("user-scalable=no,initial-scale=1.0")
 public class DatePickerDemoUI extends UI {
-
-    private VerticalLayout layout;
 
     @WebServlet(value = "/*", asyncSupported = true)
     @VaadinServletConfiguration(productionMode = false, ui = DatePickerDemoUI.class)
@@ -38,53 +34,54 @@ public class DatePickerDemoUI extends UI {
 
     @Override
     protected void init(VaadinRequest request) {
-        GridLayout gl = new GridLayout(1, 4);
+        GridLayout gl = new GridLayout(2, 4);
         gl.setSpacing(true);
         gl.setMargin(true);
         gl.setDefaultComponentAlignment(Alignment.BOTTOM_LEFT);
 
         // Initialize our new UI component
-        final PopupDateField datePicker = new DatePicker("A date picker");
-        datePicker.addValueChangeListener(e -> {
-            Notification.show(
-                    "datePicker value changed to " + datePicker.getValue());
+        DatePicker datePicker = new DatePicker(
+                "Browser locale date picker using caption");
+        datePicker.addValueChangeListener(this::showValue);
+
+        gl.addComponents(datePicker);
+        gl.space();
+
+        DatePicker localeDatePicker = new DatePicker();
+        localeDatePicker.setWidth("500px");
+        localeDatePicker.setInputPrompt(
+                "Date picker using selected locale, input prompt");
+        localeDatePicker.addValueChangeListener(e -> {
+            Notification.show("datePicker value changed to "
+                    + e.getProperty().getValue());
         });
 
-        final PopupDateField dateField = new PopupDateField("A date field");
-        dateField.addValueChangeListener(e -> {
-            Notification
-                    .show("dateField value changed to " + dateField.getValue());
+        gl.addComponents(localeDatePicker);
+        ComboBox localeSelect = new ComboBox("Locale");
+        localeSelect.addItem(Locale.ENGLISH);
+        localeSelect.addItem(new Locale("fi", "FI"));
+        localeSelect.addItem(Locale.CANADA);
+        localeSelect.addItem(Locale.CHINA);
+        localeSelect.addItem(Locale.GERMANY);
+        localeSelect.addItem(Locale.JAPANESE);
+        localeSelect.addItem(Locale.KOREAN);
+
+        localeSelect.addValueChangeListener(new ValueChangeListener() {
+            @Override
+            public void valueChange(ValueChangeEvent event) {
+                localeDatePicker.setLocale((Locale) localeSelect.getValue());
+            }
         });
 
-        Label newCode = new Label("", ContentMode.PREFORMATTED);
-        Label oldCode = new Label("", ContentMode.PREFORMATTED);
-        newCode.setSizeUndefined();
-        oldCode.setSizeUndefined();
-        newCode.addStyleName("code");
-        oldCode.addStyleName("code");
-        newCode.setValue("PopupDateField datePicker =\n"
-                + "     new DatePicker(\"A date picker\");\n"
-                + "datePicker.addValueChangeListener(e -> {\n"
-                + "     Notification.show(\n"
-                + "             \"datePicker value changed to \"\n"
-                + "              + datePicker.getValue());\n" + "});\n");
-        oldCode.setValue("PopupDateField dateField =\n"
-                + "     new PopupDateField(\"A date field\");\n"
-                + "datePicker.addValueChangeListener(e -> {\n"
-                + "     Notification.show(\n"
-                + "             \"datePicker value changed to \"\n"
-                + "              + datePicker.getValue());\n" + "});\n");
+        localeSelect.setValue(new Locale("fi", "FI"));
+        gl.addComponent(localeSelect);
 
-        gl.addComponents(dateField, oldCode, datePicker, newCode);
-        if (false) {
-            // Shared property data source
-            Property<Date> property = new ObjectProperty<>(new Date());
-            Label shared = new Label(property);
-            shared.setCaption("Shared property data source");
-            PopupDateField pdf = new PopupDateField(property);
-            pdf.setImmediate(true);
-            gl.addComponents(shared, pdf, new DatePicker(property));
-        }
         setContent(gl);
+    }
+
+    private void showValue(Property.ValueChangeEvent e) {
+        Notification.show(
+                "datePicker value changed to " + e.getProperty().getValue());
+
     }
 }
