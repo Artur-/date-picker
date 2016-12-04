@@ -3,3 +3,4 @@
 target
 .settings
 bower_components
+styles.scss.cache

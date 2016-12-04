@@ -4,6 +4,7 @@ import java.util.Locale;
 
 import javax.servlet.annotation.WebServlet;
 
+import org.vaadin.artur.combobox.ComboBox;
 import org.vaadin.artur.datepicker.DatePicker;
 
 import com.vaadin.annotations.Theme;
@@ -16,7 +17,6 @@ import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.Alignment;
-import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
@@ -58,7 +58,13 @@ public class DatePickerDemoUI extends UI {
         });
 
         gl.addComponents(localeDatePicker);
-        ComboBox localeSelect = new ComboBox("Locale");
+        ComboBox localeSelect = new ComboBox("Locale") {
+            @Override
+            public String getItemCaption(Object itemId) {
+                Locale locale = (Locale) itemId;
+                return locale.getDisplayName();
+            }
+        };
         localeSelect.addItem(Locale.ENGLISH);
         localeSelect.addItem(new Locale("fi", "FI"));
         localeSelect.addItem(Locale.CANADA);

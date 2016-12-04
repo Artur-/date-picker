@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import org.vaadin.elements.Element;
 import org.vaadin.elements.ElementIntegration;
 import org.vaadin.elements.Root;
 
@@ -18,7 +19,7 @@ import elemental.json.Json;
 import elemental.json.JsonArray;
 
 @JavaScript("vaadin://bower_components/webcomponentsjs/webcomponents-lite.min.js")
-public class DatePicker extends PopupDateField {
+public class DatePicker extends PopupDateField implements HasInputPrompt {
 
     private Root root;
     private static SimpleDateFormat dateFormatter = new SimpleDateFormat(
@@ -30,6 +31,7 @@ public class DatePicker extends PopupDateField {
         root.importHtml(
                 "VAADIN/bower_components/vaadin-date-picker/vaadin-date-picker.html");
 
+        root.eval("e.style.paddingBottom='8px'");
         root.bindAttribute("value", "value-changed");
 
         root.addEventListener("value-changed", arguments -> {
@@ -56,7 +58,7 @@ public class DatePicker extends PopupDateField {
     public void setLocale(Locale locale) {
         super.setLocale(locale);
         if (isAttached()) {
-            setLocaleData(locale);
+            setLocaleData(getLocale());
         }
     }
 
@@ -145,23 +147,19 @@ public class DatePicker extends PopupDateField {
     @Override
     protected void setInternalValue(Date newValue) {
         super.setInternalValue(newValue);
-        if (newValue == null) {
-            root.removeAttribute("value");
-        } else {
-            root.setAttribute("value", dateFormatter.format(newValue));
-        }
+        setAttribute("value", dateFormatter, newValue);
     }
 
     @Override
     public void setRangeStart(Date startDate) {
         super.setRangeStart(startDate);
-        setAttribute("min", startDate);
+        setAttribute("min", dateFormatter, startDate);
     }
 
     @Override
     public void setRangeEnd(Date endDate) {
         super.setRangeEnd(endDate);
-        setAttribute("max", endDate);
+        setAttribute("max", dateFormatter, endDate);
     }
 
     @Override
@@ -170,37 +168,13 @@ public class DatePicker extends PopupDateField {
     }
 
     @Override
-    public void setInputPrompt(String inputPrompt) {
-        setAttribute("placeholder", inputPrompt);
-    }
-
-    @Override
     public void setShowISOWeekNumbers(boolean showWeekNumbers) {
         setAttribute("show-week-numbers", showWeekNumbers);
     }
 
-    private void setAttribute(String attr, Date date) {
-        if (date != null) {
-            root.setAttribute(attr, dateFormatter.format(date));
-        } else {
-            root.removeAttribute(attr);
-        }
-    }
-
-    private void setAttribute(String attr, String value) {
-        if (value != null) {
-            root.setAttribute(attr, value);
-        } else {
-            root.removeAttribute(attr);
-        }
-    }
-
-    private void setAttribute(String attr, boolean onOff) {
-        if (onOff) {
-            root.setAttribute(attr, true);
-        } else {
-            root.removeAttribute(attr);
-        }
+    @Override
+    public Element getElement() {
+        return root;
     }
 
 }

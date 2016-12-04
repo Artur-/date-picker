@@ -17,6 +17,7 @@
   ],
   "dependencies": {
     "vaadin-date-picker": "v1.2.0",
-    "polymer": "1.7.0"
+    "polymer": "1.7.0",
+    "vaadin-combo-box": "v1.1.5"
   }
 }
