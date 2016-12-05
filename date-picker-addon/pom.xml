@@ -5,7 +5,7 @@
     <groupId>org.vaadin.artur</groupId>
     <artifactId>date-picker</artifactId>
     <packaging>jar</packaging>
-    <version>0.3.1</version>
+    <version>0.4.0</version>
     <name>DatePicker Add-on</name>
 
     <prerequisites>
