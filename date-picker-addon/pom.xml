@@ -5,7 +5,7 @@
     <groupId>org.vaadin.artur</groupId>
     <artifactId>date-picker</artifactId>
     <packaging>jar</packaging>
-    <version>0.4.0</version>
+    <version>2.0-SNAPSHOT</version>
     <name>DatePicker Add-on</name>
 
     <prerequisites>
@@ -16,7 +16,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <vaadin.version>7.7.5</vaadin.version>
+        <vaadin.version>8.0-SNAPSHOT</vaadin.version>
         <vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
 
         <!-- ZIP Manifest fields -->
@@ -55,21 +55,6 @@
             <version>${vaadin.version}</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>org.vaadin</groupId>
-            <artifactId>elements</artifactId>
-            <version>0.1.5</version>
-        </dependency>
-
-
-        <!-- This can be replaced with TestNG or some other test framework 
-            supported by the surefire plugin -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.8.1</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
     <build>
@@ -89,7 +74,6 @@
                                                         <!-- Package format version - do not change -->
                                                         <Vaadin-Package-Version>1</Vaadin-Package-Version>
                                                         <Vaadin-License-Title>${Vaadin-License-Title}</Vaadin-License-Title>
-                                                        <Vaadin-Widgetsets>org.vaadin.artur.datepicker.DatePicker, org.vaadin.artur.combobox.ComboBox</Vaadin-Widgetsets>
                                                 </manifestEntries>
                                         </archive>
                                 </configuration>

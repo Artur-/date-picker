@@ -1,22 +1,21 @@
 package org.vaadin.artur.datepicker.demo;
 
+import java.util.Date;
 import java.util.Locale;
 
 import javax.servlet.annotation.WebServlet;
 
-import org.vaadin.artur.combobox.ComboBox;
 import org.vaadin.artur.datepicker.DatePicker;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.annotations.Viewport;
-import com.vaadin.data.Property;
-import com.vaadin.data.Property.ValueChangeEvent;
-import com.vaadin.data.Property.ValueChangeListener;
+import com.vaadin.data.HasValue.ValueChangeEvent;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
@@ -49,35 +48,24 @@ public class DatePickerDemoUI extends UI {
 
         DatePicker localeDatePicker = new DatePicker();
         localeDatePicker.setWidth("500px");
-        localeDatePicker.setInputPrompt(
+        localeDatePicker.setPlaceholder(
                 "Date picker using selected locale, input prompt and week numbers");
         localeDatePicker.setShowISOWeekNumbers(true);
         localeDatePicker.addValueChangeListener(e -> {
-            Notification.show("datePicker value changed to "
-                    + e.getProperty().getValue());
+            Notification.show("datePicker value changed to " + e.getValue());
         });
 
         gl.addComponents(localeDatePicker);
-        ComboBox localeSelect = new ComboBox("Locale") {
-            @Override
-            public String getItemCaption(Object itemId) {
-                Locale locale = (Locale) itemId;
-                return locale.getDisplayName();
-            }
-        };
-        localeSelect.addItem(Locale.ENGLISH);
-        localeSelect.addItem(new Locale("fi", "FI"));
-        localeSelect.addItem(Locale.CANADA);
-        localeSelect.addItem(Locale.CHINA);
-        localeSelect.addItem(Locale.GERMANY);
-        localeSelect.addItem(Locale.JAPANESE);
-        localeSelect.addItem(Locale.KOREAN);
+        ComboBox<Locale> localeSelect = new ComboBox<>("Locale");
+        localeSelect.setItems(Locale.ENGLISH, new Locale("fi", "FI"),
+                Locale.CANADA, Locale.CHINA, Locale.GERMANY, Locale.JAPANESE,
+                Locale.KOREAN);
+        localeSelect.setItemCaptionGenerator(Locale::getDisplayName);
 
-        localeSelect.addValueChangeListener(new ValueChangeListener() {
-            @Override
-            public void valueChange(ValueChangeEvent event) {
-                localeDatePicker.setLocale((Locale) localeSelect.getValue());
-            }
+        localeSelect.addValueChangeListener(event -> {
+
+            // localeDatePicker.setLocale(localeSelect.getValue());
+            localeDatePicker.setLocale(event.getValue());
         });
 
         localeSelect.setValue(new Locale("fi", "FI"));
@@ -86,9 +74,8 @@ public class DatePickerDemoUI extends UI {
         setContent(gl);
     }
 
-    private void showValue(Property.ValueChangeEvent e) {
-        Notification.show(
-                "datePicker value changed to " + e.getProperty().getValue());
+    private void showValue(ValueChangeEvent<Date> e) {
+        Notification.show("datePicker value changed to " + e.getValue());
 
     }
 }
